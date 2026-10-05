@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>栄冠ラグビー</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#07111f;
+  color:#f5f7fa;
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;
+}
+button,select,input{
+  font:inherit;
+}
+button{
+  border:0;
+  border-radius:10px;
+  padding:12px 15px;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:active{transform:scale(.97)}
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:14px;
+}
+header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:#0b1729;
+  border-bottom:1px solid #263752;
+  padding:10px 12px;
+}
+.header-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+.logo{
+  font-size:20px;
+  font-weight:900;
+}
+.header-info{
+  font-size:12px;
+  color:#b7c4d8;
+}
+h1,h2,h3{margin:8px 0 14px}
+.card{
+  background:#0d1b30;
+  border:1px solid #263752;
+  border-radius:14px;
+  padding:15px;
+  margin-bottom:13px;
+}
+.hero{
+  text-align:center;
+  padding:30px 16px;
+}
+.title{
+  font-size:42px;
+  font-weight:1000;
+  letter-spacing:2px;
+  margin:15px 0;
+}
+.subtitle{color:#9eabc0}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;
+}
+.grid2{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+.grid3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+.pref{
+  background:#14253d;
+  color:white;
+  border:1px solid #304763;
+  min-height:55px;
+}
+.pref.selected{
+  background:#0d6b45;
+  border-color:#27d48c;
+}
+.primary{
+  background:#16a36b;
+  color:white;
+}
+.secondary{
+  background:#253852;
+  color:white;
+}
+.warning{
+  background:#c78317;
+  color:white;
+}
+.danger{
+  background:#a92d3e;
+  color:white;
+}
+.dark{
+  background:#101c2e;
+  color:white;
+  border:1px solid #33445d;
+}
+.big{
+  width:100%;
+  font-size:18px;
+  padding:15px;
+}
+.small{
+  font-size:12px;
+  padding:7px 9px;
+}
+.stat{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  border-bottom:1px solid #23344e;
+}
+.stat:last-child{border-bottom:0}
+.player{
+  background:#12243b;
+  border:1px solid #2d425f;
+  border-radius:12px;
+  padding:11px;
+  margin-bottom:8px;
+}
+.player-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+}
+.ovr{
+  font-size:22px;
+  font-weight:900;
+}
+.badge{
+  display:inline-block;
+  border-radius:999px;
+  padding:4px 8px;
+  font-size:11px;
+  margin:2px;
+  background:#273c58;
+}
+.badge.japan{background:#263c72}
+.badge.foreign{background:#713b59}
+.badge.genius{background:#7b5a16}
+.badge.world{background:#7b321e}
+.badge.pos{background:#145b53}
+.pos-btn{
+  width:100%;
+  text-align:left;
+  background:#13263e;
+  color:white;
+  border:1px solid #304763;
+  margin-bottom:7px;
+}
+.pos-btn.selected{
+  background:#116346;
+  border-color:#26d38c;
+}
+.bar{
+  height:9px;
+  background:#26364d;
+  border-radius:8px;
+  overflow:hidden;
+  margin-top:4px;
+}
+.bar span{
+  display:block;
+  height:100%;
+  background:#2ed18b;
+}
+.notice{
+  padding:11px;
+  background:#122c2b;
+  border:1px solid #1c6359;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+.month{
+  font-size:24px;
+  font-weight:900;
+}
+.match{
+  padding:13px;
+  background:#102138;
+  border:1px solid #2c405c;
+  border-radius:12px;
+  margin-bottom:10px;
+}
+.score{
+  font-size:28px;
+  font-weight:1000;
+  text-align:center;
+  margin:8px;
+}
+.center{text-align:center}
+.muted{color:#9dacbf}
+.hidden{display:none!important}
+.save-slot{
+  border:1px solid #304763;
+  padding:15px;
+  border-radius:12px;
+  background:#12243a;
+  margin-bottom:10px;
+}
+.table{
+  width:100%;
+  border-collapse:collapse;
+}
+.table th,.table td{
+  padding:8px;
+  border-bottom:1px solid #293b55;
+  text-align:left;
+  font-size:13px;
+}
+@media(max-width:600px){
+  .title{font-size:34px}
+  .grid3{grid-template-columns:1fr 1fr}
+  .grid2{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<div id="app"></div>
+
+<script>
+"use strict";
+
+/* =========================================================
+   栄冠ラグビー 完全新規版
+   ========================================================= */
+
+const PREFS = [
+"北海道","青森県","岩手県","宮城県","秋田県","山形県","福島県",
+"茨城県","栃木県","群馬県","埼玉県","千葉県","東京都","神奈川県",
+"新潟県","富山県","石川県","福井県","山梨県","長野県",
+"岐阜県","静岡県","愛知県","三重県",
+"滋賀県","京都府","大阪府","兵庫県","奈良県","和歌山県",
+"鳥取県","島根県","岡山県","広島県","山口県",
+"徳島県","香川県","愛媛県","高知県",
+"福岡県","佐賀県","長崎県","熊本県","大分県","宮崎県","鹿児島県","沖縄県"
+];
+
+const POSITIONS = [
+ {no:1,name:"PR"},
+ {no:2,name:"HO"},
+ {no:3,name:"PR"},
+ {no:4,name:"LO"},
+ {no:5,name:"LO"},
+ {no:6,name:"FL"},
+ {no:7,name:"FL"},
+ {no:8,name:"No.8"},
+ {no:9,name:"SH"},
+ {no:10,name:"SO"},
+ {no:11,name:"WTB"},
+ {no:12,name:"CTB"},
+ {no:13,name:"CTB"},
+ {no:14,name:"WTB"},
+ {no:15,name:"FB"}
+];
+
+const POSITION_NAMES = ["PR","HO","LO","FL","No.8","SH","SO","WTB","CTB","FB"];
+
+const FOREIGN_NAMES = {
+ "南アフリカ":[
+  "Liam van der Merwe","Johan Botha","Duan Pretorius","Ruan Jacobs",
+  "Pieter de Klerk","Francois Naidoo","Cameron van Wyk","Ethan du Plessis"
+ ],
+ "ニュージーランド":[
+  "Liam Thompson","Noah Williams","Jack Wilson","Finn Taylor",
+  "Ariki Moana","Tama Rangi","Kauri Smith","Mason Walker"
+ ],
+ "オーストラリア":[
+  "Jack Anderson","Lachlan Brown","Cooper Mitchell","William Carter",
+  "Ethan Miller","Noah Campbell","James Walker","Ryan Collins"
+ ],
+ "トンガ":[
+  "Sione Taufa","Viliami Taufatofua","Samuela Tonga","Tevita Finau",
+  "Manu Latu","Sione Vea","Tavita Moala","Peni Fifita"
+ ]
+};
+
+const FLAGS = {
+ "日本":"🇯🇵",
+ "南アフリカ":"🇿🇦",
+ "ニュージーランド":"🇳🇿",
+ "オーストラリア":"🇦🇺",
+ "トンガ":"🇹🇴"
+};
+
+/*
+  2025年度の全国大会出場校・主要校を中心に、
+  ゲーム内の都道府県勢力として設定。
+  全47都道府県を選択可能。
+*/
+const SCHOOL_DATA = {
+"北海道":[["札幌山の手高等学校",88],["立命館慶祥高等学校",76],["函館ラ・サール高等学校",68]],
+"青森県":[["青森山田高等学校",84],["八戸学院光星高等学校",72],["三本木農業恵拓高等学校",67]],
+"岩手県":[["黒沢尻工業高等学校",79],["盛岡工業高等学校",74],["黒沢尻北高等学校",68]],
+"宮城県":[["仙台育英学園高等学校",91],["佐沼高等学校",67],["石巻工業高等学校",65]],
+"秋田県":[["秋田工業高等学校",91],["秋田中央高等学校",82],["金足農業高等学校",69]],
+"山形県":[["山形中央高等学校",78],["山形南高等学校",70],["鶴岡工業高等学校",66]],
+"福島県":[["磐城高等学校",80],["郡山北工業高等学校",72],["松韻学園福島高等学校",67]],
+"茨城県":[["茗溪学園高等学校",93],["東洋大学附属牛久高等学校",79],["清真学園高等学校",71]],
+"栃木県":[["國學院大學栃木高等学校",94],["佐野日本大学高等学校",73],["作新学院高等学校",68]],
+"群馬県":[["桐生第一高等学校",78],["高崎高等学校",72],["明和県央高等学校",70]],
+"埼玉県":[["昌平高等学校",91],["川越東高等学校",78],["熊谷工業高等学校",74]],
+"千葉県":[["流通経済大学付属柏高等学校",94],["専修大学松戸高等学校",76],["市立船橋高等学校",73]],
+"東京都":[["國學院久我山高等学校",92],["目黒学院高等学校",88],["東京高等学校",79]],
+"神奈川県":[["桐蔭学園高等学校",98],["東海大学付属相模高等学校",92],["日本大学藤沢高等学校",82],["関東学院六浦高等学校",78]],
+"新潟県":[["開志国際高等学校",87],["新潟工業高等学校",72],["北越高等学校",69]],
+"富山県":[["富山第一高等学校",77],["魚津工業高等学校",69],["砺波高等学校",65]],
+"石川県":[["日本航空高等学校石川",88],["鶴来高等学校",72],["金沢学院大学附属高等学校",68]],
+"福井県":[["若狭東高等学校",76],["敦賀工業高等学校",70],["福井工業大学附属福井高等学校",66]],
+"山梨県":[["日川高等学校",82],["山梨学院高等学校",76],["甲府工業高等学校",70]],
+"長野県":[["飯田高等学校",80],["岡谷工業高等学校",73],["長野高等学校",70]],
+"岐阜県":[["岐阜聖徳学園高等学校",82],["関商工高等学校",75],["岐阜工業高等学校",71]],
+"静岡県":[["東海大学付属静岡翔洋高等学校",87],["静岡聖光学院高等学校",80],["浜松工業高等学校",74]],
+"愛知県":[["中部大学春日丘高等学校",94],["名古屋高等学校",84],["西陵高等学校",77]],
+"三重県":[["朝明高等学校",83],["四日市工業高等学校",80],["木本高等学校",68]],
+"滋賀県":[["光泉カトリック高等学校",87],["八幡工業高等学校",73],["膳所高等学校",68]],
+"京都府":[["京都成章高等学校",96],["京都工学院高等学校",87],["洛北高等学校",77]],
+"大阪府":[
+ ["東海大学付属大阪仰星高等学校",97],
+ ["大阪桐蔭高等学校",96],
+ ["常翔学園高等学校",93],
+ ["近畿大学附属高等学校",84],
+ ["大阪朝鮮高級学校",82],
+ ["関西大学北陽高等学校",78]
+],
+"兵庫県":[
+ ["報徳学園高等学校",96],
+ ["関西学院高等部",91],
+ ["神戸市立科学技術高等学校",82],
+ ["神戸高等学校",76],
+ ["彩星工科高等学校",74],
+ ["甲南高等学校",72],
+ ["芦屋高等学校",68],
+ ["星陵高等学校",67],
+ ["兵庫工業高等学校",65],
+ ["御影高等学校",63]
+],
+"奈良県":[["御所実業高等学校",95],["天理高等学校",90],["奈良朱雀・奈良商工",68]],
+"和歌山県":[["近畿大学附属和歌山高等学校",84],["熊野高等学校",78],["和歌山工業高等学校",70]],
+"鳥取県":[["倉吉東高等学校",83],["米子工業高等学校",70],["米子東高等学校",68]],
+"島根県":[["石見智翠館高等学校",94],["松江工業高等学校",72],["出雲高等学校",66]],
+"岡山県":[["倉敷高等学校",91],["津山工業高等学校",69],["岡山工業高等学校",67]],
+"広島県":[["尾道高等学校",94],["崇徳高等学校",82],["広島工業高等学校",72]],
+"山口県":[["高川学園高等学校",86],["大津緑洋高等学校",74],["萩商工高等学校",68]],
+"徳島県":[["城東高等学校",88],["脇町高等学校",72],["徳島科学技術高等学校",67]],
+"香川県":[["高松北高等学校",83],["坂出第一高等学校",76],["坂出工業高等学校",67]],
+"愛媛県":[["松山聖陵高等学校",90],["新田高等学校",77],["松山工業高等学校",69]],
+"高知県":[["土佐塾高等学校",87],["高知中央高等学校",74],["高知工業高等学校",68]],
+"福岡県":[
+ ["東福岡高等学校",100],
+ ["筑紫高等学校",93],
+ ["東海大学付属福岡高等学校",82],
+ ["福岡高等学校",77],
+ ["福岡工業大学附属城東高等学校",75],
+ ["浮羽究真館高等学校",72]
+],
+"佐賀県":[["佐賀工業高等学校",97],["早稲田佐賀高等学校",79],["鳥栖工業高等学校",72]],
+"長崎県":[["長崎北陽台高等学校",91],["長崎北高等学校",83],["長崎南山高等学校",76]],
+"熊本県":[["九州学院高等学校",89],["熊本工業高等学校",78],["熊本西高等学校",70]],
+"大分県":[["大分東明高等学校",88],["大分舞鶴高等学校",82],["日本文理大学附属高等学校",69]],
+"宮崎県":[["高鍋高等学校",94],["日向高等学校",74],["都城工業高等学校",69]],
+"鹿児島県":[["鹿児島実業高等学校",91],["鹿児島工業高等学校",75],["鹿児島玉龍高等学校",68]],
+"沖縄県":[["コザ高等学校",82],["名護高等学校",78],["読谷高等学校",68]]
+};
+
+const UNIVERSITY = [
+ ["帝京大学",96],["早稲田大学",94],["明治大学",92],
+ ["東海大学",91],["京都産業大学",89],["天理大学",88],
+ ["同志社大学",87],["筑波大学",86],["関西学院大学",84],
+ ["法政大学",83],["立命館大学",82],["日本大学",80],
+ ["関西大学",78],["流通経済大学",76],["近畿大学",75]
+];
+
+const JAPAN_FIRST = [
+ "佐藤","鈴木","高橋","田中","伊藤","渡辺","山本","中村","小林","加藤",
+ "吉田","山田","佐々木","山口","松本","井上","木村","林","清水","斎藤",
+ "阿部","森","池田","橋本","山下","石井","中島","前田","藤田","小川"
+];
+
+const JAPAN_LAST = [
+ "大輔","翔太","健太","蓮","悠真","拓海","颯太","陸","陽向","直樹",
+ "優斗","海斗","雄大","駿","光","隼人","拓也","涼","智也","和真"
+];
+
+let game = null;
+let selectedSave = null;
+
+/* =========================================================
+   ユーティリティ
+   ========================================================= */
+
+function rand(min,max){
+ return Math.floor(Math.random()*(max-min+1))+min;
+}
+
+function pick(arr){
+ return arr[Math.floor(Math.random()*arr.length)];
+}
+
+function clamp(v,min,max){
+ return Math.max(min,Math.min(max,v));
+}
+
+function avg(arr){
+ if(!arr.length)return 0;
+ return Math.round(arr.reduce((a,b)=>a+b,0)/arr.length);
+}
+
+function esc(str){
+ return String(str)
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;");
+}
+
+function saveKey(slot){
+ return "eikan_rugby_save_"+slot;
+}
+
+function saveGame(slot){
+ if(!game)return;
+ localStorage.setItem(saveKey(slot),JSON.stringify(game));
+ game.lastSaved = new Date().toLocaleString("ja-JP");
+ localStorage.setItem(saveKey(slot),JSON.stringify(game));
+}
+
+function loadGame(slot){
+ const raw=localStorage.getItem(saveKey(slot));
+ if(!raw)return false;
+ try{
+  game=JSON.parse(raw);
+  return true;
+ }catch(e){
+  return false;
+ }
+}
+
+function deleteSave(slot){
+ localStorage.removeItem(saveKey(slot));
+ renderTitle();
+}
+
+function randomName(){
+ return pick(JAPAN_FIRST)+" "+pick(JAPAN_LAST);
+}
+
+function foreignName(country){
+ return pick(FOREIGN_NAMES[country]);
+}
+
+function nationalityBadge(p){
+ const flag=FLAGS[p.nationality]||"🏳️";
+ const cls=p.nationality==="日本"?"japan":"foreign";
+ return `<span class="badge ${cls}">${flag} ${esc(p.nationality)}</span>`;
+}
+
+function geniusBadge(p){
+ return p.genius?`<span class="badge genius">⭐ 天才</span>`:"";
+}
+
+function worldBadge(p){
+ return p.worldSelected?`<span class="badge world">🌎 世界選抜</span>`:"";
+}
+
+/* =========================================================
+   選手生成
+   ========================================================= */
+
+function makePlayer(pref,school,strength,grade=1,forceForeign=false){
+ const foreign = forceForeign || Math.random()<0.035;
+ let nationality="日本";
+ let name=randomName();
+
+ if(foreign){
+  nationality=pick(Object.keys(FOREIGN_NAMES));
+  name=foreignName(nationality);
+ }
+
+ /*
+  天才は約4%。
+  スカウト抽選時に通常の2倍扱い。
+ */
+ const genius=Math.random()<0.04;
+
+ const position=pick(POSITION_NAMES);
+
+ let base=strength+rand(-13,13)+rand(-grade*2,grade*3);
+ if(genius)base+=rand(7,13);
+ if(foreign)base+=rand(2,9);
+
+ base=clamp(base,35,99);
+
+ const stats={
+  speed:clamp(base+rand(-12,10),25,99),
+  power:clamp(base+rand(-10,12),25,99),
+  stamina:clamp(base+rand(-8,10),25,99),
+  skill:clamp(base+rand(-10,10),25,99),
+  kick:clamp(base+rand(-12,10),20,99),
+  tackle:clamp(base+rand(-9,11),25,99),
+  lineout:clamp(base+rand(-10,10),20,99),
+  scrum:clamp(base+rand(-10,11),20,99)
+ };
+
+ let overall=Math.round(Object.values(stats).reduce((a,b)=>a+b,0)/Object.values(stats).length);
+
+ return {
+  id:"P"+Date.now()+"_"+Math.random().toString(36).slice(2),
+  name,
+  nationality,
+  grade,
+  position,
+  overall:clamp(overall,25,99),
+  stats,
+  genius,
+  foreign,
+  sourceSchool:school,
+  sourcePref:pref,
+  destination:null,
+  commitment:0,
+  worldSelected:false,
+  worldYear:null,
+  tries:0,
+  appearances:0,
+  tacklesMade:0
+ };
+}
+
+function makeTeam(pref,school,strength,count=23){
+ const arr=[];
+ for(let i=0;i<count;i++){
+  let grade=i<8?3:i<16?2:1;
+  arr.push(makePlayer(pref,school,strength,grade));
+ }
+ return arr;
+}
+
+/* =========================================================
+   ゲーム初期化
+   ========================================================= */
+
+function createNewGame(pref,school,strength){
+ const roster=makeTeam(pref,school,strength,30);
+
+ return {
+  version:2,
+  school:school,
+  prefecture:pref,
+  schoolStrength:strength,
+  year:2026,
+  month:4,
+  money:100,
+  facilities:{
+   training:1,
+   gym:1,
+   scouting:1,
+   medical:1
+  },
+  roster,
+  candidates:[],
+  selectedCandidates:[],
+  lineup:{},
+  history:[],
+  best15History:[],
+  graduates:[],
+  legends:[],
+  worldHistory:[],
+  logs:[],
+  nationalQualified:false,
+  octoberDone:false,
+  nationalDone:false,
+  seasonBest:[],
+  lastSaved:null
+ };
+}
+
+/* =========================================================
+   タイトル
+   ========================================================= */
+
+function renderTitle(){
+ selectedSave=null;
+
+ const s1=localStorage.getItem(saveKey(1));
+ const s2=localStorage.getItem(saveKey(2));
+
+ document.getElementById("app").innerHTML=`
+ <div class="container">
+  <div class="hero">
+   <div style="font-size:60px">🏉</div>
+   <div class="title">栄冠ラグビー</div>
+   <div class="subtitle">高校ラグビー育成シミュレーション</div>
+  </div>
+
+  <div class="card">
+   <h2>💾 セーブデータ</h2>
+
+   ${saveSlotHTML(1,s1)}
+   ${saveSlotHTML(2,s2)}
+  </div>
+
+  <div class="card center">
+   <h3>🆕 新しくゲームを始める</h3>
+   <p class="muted">47都道府県から好きな地域を選択できます。</p>
+   <button class="primary big" onclick="renderPrefSelect()">新規ゲーム</button>
+  </div>
+ </div>
+ `;
+}
+
+function saveSlotHTML(slot,raw){
+ if(!raw){
+  return `
+   <div class="save-slot">
+    <b>セーブ${slot}</b>
+    <div class="muted">空きスロット</div>
+   </div>
+  `;
+ }
+
+ let d;
+ try{d=JSON.parse(raw)}catch(e){d=null}
+
+ if(!d){
+  return `<div class="save-slot">セーブ${slot}：読み込みエラー</div>`;
+ }
+
+ return `
+ <div class="save-slot">
+  <div style="display:flex;justify-content:space-between;gap:8px">
+   <div>
+    <b>セーブ${slot}</b>
+    <div>${esc(d.school)}（${esc(d.prefecture)}）</div>
+    <div class="muted">${d.year}年 ${d.month}月</div>
+   </div>
+   <div>
+    <button class="primary small" onclick="continueSave(${slot})">ロード</button>
+    <button class="danger small" onclick="deleteSave(${slot})">削除</button>
+   </div>
+  </div>
+ </div>
+ `;
+}
+
+function continueSave(slot){
+ if(loadGame(slot)){
+  selectedSave=slot;
+  renderGame();
+ }else{
+  alert("セーブデータを読み込めませんでした。");
+ }
+}
+
+/* =========================================================
+   都道府県選択
+   ========================================================= */
+
+function renderPrefSelect(){
+ document.getElementById("app").innerHTML=`
+ <div class="container">
+  <div class="card">
+   <button class="secondary small" onclick="renderTitle()">← タイトルへ</button>
+   <h1>都道府県を選択</h1>
+   <p class="muted">47都道府県すべてから選択できます。</p>
+   <div class="grid">
+    ${PREFS.map(p=>`
+     <button class="pref" onclick="choosePref('${p}')">${p}</button>
+    `).join("")}
+   </div>
+  </div>
+ </div>
+ `;
+}
+
+function choosePref(pref){
+ const schools=SCHOOL_DATA[pref]||[];
+ document.getElementById("app").innerHTML=`
+ <div class="container">
+  <div class="card">
+   <button class="secondary small" onclick="renderPrefSelect()">← 都道府県へ戻る</button>
+   <h1>${esc(pref)}の高校を選択</h1>
+   <p class="muted">2025年度の実績などを参考にゲーム内戦力を設定しています。</p>
+
+   ${schools.map((s,i)=>`
+    <button class="pos-btn" onclick="startGame('${pref}',${i})">
+      <b>${esc(s[0])}</b>
+      <span style="float:right">戦力 ${s[1]}</span>
+      <br>
+      <small class="muted">地区予選参加校</small>
+    </button>
+   `).join("")}
+  </div>
+ </div>
+ `;
+}
+
+function startGame(pref,index){
+ const s=SCHOOL_DATA[pref][index];
+ game=createNewGame(pref,s[0],s[1]);
+
+ /* 新規ゲームはセーブ1を初期選択 */
+ selectedSave=1;
+ saveGame(1);
+
+ renderGame();
+}
+
+/* =========================================================
+   共通ヘッダー
+   ========================================================= */
+
+function headerHTML(){
+ return `
+ <header>
+  <div class="header-row">
+   <div>
+    <div class="logo">🏉 栄冠ラグビー</div>
+    <div class="header-info">
+     ${esc(game.school)}｜${esc(game.prefecture)}｜${game.year}年${game.month}月
+    </div>
+   </div>
+
+   <div style="display:flex;gap:5px">
+    <button class="secondary small" onclick="openSaveMenu()">💾</button>
+    <button class="secondary small" onclick="renderTitle()">🏠</button>
+   </div>
+  </div>
+ </header>
+ `;
+}
+
+function openSaveMenu(){
+ const slot=selectedSave||1;
+ const other=slot===1?2:1;
+
+ const ok=confirm(
+  `現在のゲームをセーブ${slot}に保存しますか？\n\n`+
+  `OK：保存\nキャンセル：何もしない`
+ );
+ if(ok){
+  saveGame(slot);
+  alert(`セーブ${slot}に保存しました。`);
+ }
+}
+
+/* =========================================================
+   メイン画面
+   ========================================================= */
+
+function renderGame(){
+ document.getElementById("app").innerHTML=
+ headerHTML()+
+ `<main class="container">
+  ${monthNotice()}
+  ${dashboardHTML()}
+ </main>`;
+}
+
+function monthNotice(){
+ let text="";
+ let cls="notice";
+
+ if(game.month===10){
+  text="🏆 10月：都道府県地区予選";
+ }else if(game.month===11){
+  text=game.nationalQualified?
+   "🏆 11月：全国大会！":
+   "11月：全国大会";
+ }else if(game.month===3){
+  text="🎓 3月：卒業・進路決定";
+ }else{
+  text=`📅 ${game.month}月：育成シーズン`;
+ }
+
+ return `<div class="${cls}"><b>${text}</b></div>`;
+}
+
+function dashboardHTML(){
+ return `
+ <div class="card">
+  <div class="grid3">
+   <div>
+    <div class="muted">部員</div>
+    <b>${game.roster.length}/50</b>
+   </div>
+   <div>
+    <div class="muted">学校戦力</div>
+    <b>${teamOverall()}</b>
+   </div>
+   <div>
+    <div class="muted">資金</div>
+    <b>${game.money}</b>
+   </div>
+  </div>
+ </div>
+
+ <div class="grid2">
+  <div class="card">
+   <h3>👥 選手</h3>
+   <button class="primary big" onclick="renderRoster()">選手一覧</button>
+   <button class="secondary big" onclick="renderLineup()">スタメン決定</button>
+  </div>
+
+  <div class="card">
+   <h3>🔎 スカウト</h3>
+   <button class="primary big" onclick="renderScouting()">候補30人を見る</button>
+  </div>
+
+  <div class="card">
+   <h3>🏉 試合</h3>
+   <button class="primary big" onclick="renderMatches()">試合メニュー</button>
+  </div>
+
+  <div class="card">
+   <h3>🏫 学校</h3>
+   <button class="secondary big" onclick="renderFacilities()">施設強化</button>
+  </div>
+
+  <div class="card">
+   <h3>🏆 記録</h3>
+   <button class="secondary big" onclick="renderRecords()">年間記録・OB</button>
+  </div>
+
+  <div class="card">
+   <h3>📅 進行</h3>
+   <button class="warning big" onclick="nextMonth()">次の月へ</button>
+  </div>
+ </div>
+
+ <div class="card">
+  <h3>📜 最近の記録</h3>
+  ${game.logs.length?
+   game.logs.slice(-5).reverse().map(x=>`<div class="stat">${esc(x)}</div>`).join("")
+   :"まだ記録がありません。"}
+ </div>
+ `;
+}
+
+function teamOverall(){
+ const starters=getStarters();
+ if(!starters.length)return avg(game.roster.map(p=>p.overall));
+ return avg(starters.map(x=>x.effectiveOverall));
+}
+
+/* =========================================================
+   選手一覧・詳細
+   ========================================================= */
+
+function renderRoster(){
+ document.getElementById("app").innerHTML=
+ headerHTML()+
+ `<main class="container">
+  <div class="card">
+   <button class="secondary small" onclick="renderGame()">← 戻る</button>
+   <h1>選手一覧</h1>
+   <p class="muted">タップすると詳細を確認できます。</p>
+
+   ${game.roster.map(p=>playerCard(p)).join("")}
+  </div>
+ </main>`;
+}
+
+function playerCard(p){
+ return `
+ <div class="player" onclick="renderPlayer('${p.id}')">
+  <div class="player-title">
+   <div>
+    <b>${esc(p.name)}</b>
+    <br>
+    ${nationalityBadge(p)}
+    <span class="badge">${p.grade}年</span>
+    <span class="badge pos">${esc(p.position)}</span>
+    ${geniusBadge(p)}
+    ${worldBadge(p)}
+   </div>
+   <div class="ovr">${p.overall}</div>
+  </div>
+ </div>
+ `;
+}
+
+function renderPlayer(id){
+ const p=game.roster.find(x=>x.id===id);
+ if(!p)return;
+
+ document.getElementById("app").innerHTML=
+ headerHTML()+
+ `<main class="container">
+  <div class="card">
+   <button class="secondary small" onclick="renderRoster()">← 選手一覧</button>
+
+   <h1>${esc(p.name)}</h1>
+
+   <div class="center" style="font-size:40px">
+    ${FLAGS[p.nationality]||"🏳️"}
+   </div>
+
+   <div class="center">
+    ${nationalityBadge(p)}
+    ${geniusBadge(p)}
+    ${worldBadge(p)}
+   </div>
+
+   <div class="grid2" style="margin-top:15px">
+    <div class="stat"><span>学年</span><b>${p.grade}年</b></div>
+    <div class="stat"><span>本来のポジション</span><b>${p.position}</b></div>
+    <div class="stat"><span>総合</span><b>${p.overall}</b></div>
+    <div class="stat"><span>出身高校</span><b>${esc(p.sourceSchool)}</b></div>
+    <div class="stat"><span>都道府県</span><b>${esc(p.sourcePref)}</b></div>
+    <div class="stat"><span>国籍</span><b>${FLAGS[p.nationality]||""} ${esc(p.nationality)}</b></div>
+   </div>
+  </div>
+
+  <div class="card">
+   <h2>能力</h2>
+   ${Object.entries(p.stats).map(([k,v])=>`
+    <div class="stat">
+     <span>${statName(k)}</span>
+     <b>${v}</b>
+    </div>
+    <div class="bar"><span style="width:${v}%"></span></div>
+   `).join("")}
+  </div>
+
+  <div class="card">
+   <h2>🎓 卒業後の進路</h2>
+   <div class="stat">
+    <span>進学先</span>
+    <b>${p.destination||"未決定"}</b>
+   </div>
+   <div class="stat">
+    <span>確約度</span>
+    <b>${p.commitment}%</b>
+   </div>
+  </div>
+
+  <div class="card">
+   <h2>🌎 世界選抜</h2>
+   <div class="stat">
+    <span>招集状況</span>
+    <b>${p.worldSelected?"招集経験あり":"未招集"}</b>
+   </div>
+   ${p.worldSelected?`
+    <div class="stat">
+     <span>招集年度</span>
+     <b>${p.worldYear}年</b>
+    </div>
+   `:""}
+  </div>
+ </main>`;
+}
+
+function statName(k){
+ return {
+  speed:"スピード",
+  power:"パワー",
+  stamina:"スタミナ",
+  skill:"スキル",
+  kick:"キック",
+  tackle:"タックル",
+  lineout:"ラインアウト",
+  scrum:"スクラム"
+ }[k]||k;
+}
+
+/* =========================================================
+   スタメン
+   ========================================================= */
+
+function getStarters(){
+ return POSITIONS.map(pos=>{
+  const p=game.roster.find(x=>game.lineup[pos.no]===x.id);
+  if(!p)return null;
+
+  const fit=positionFit(p,pos.name);
+  return {
+   number:pos.no,
+   position:pos.name,
+   player:p,
+   fit,
+   effectiveOverall:fit?p.overall:p.overall-5
+  };
+ }).filter(Boolean);
+}
+
+function positionFit(p,pos){
+ if(pos==="No.8")return ["No.8","FL"].includes(p.position);
+ if(pos==="CTB")return ["CTB","WTB"].includes(p.position);
+ return p.position===pos;
+}
+
+function renderLineup(){
+ document.getElementById("app").innerHTML=
+ headerHTML()+
+ `<main class="container">
+  <div class="card">
+   <button class="secondary small" onclick="renderGame()">← 戻る</button>
+   <h1>🏉 スタメン決定</h1>
+
+   <div class="notice">
+    <b>背番号順に決定します。</b><br>
+    適性外のポジションで出場すると、その試合のみ総合値が<strong>−5</strong>されます。
+   </div>
+
+   ${POSITIONS.map(pos=>lineupPosition(pos)).join("")}
+
+   <button class="primary big" onclick="finishLineup()">スタメンを確定</button>
+  </div>
+ </main>`;
+}
+
+function lineupPosition(pos){
+ const current=game.lineup[pos.no];
+ const p=current?game.roster.find(x=>x.id===current):null;
+
+ const candidates=game.roster
+  .filter(x=>x.grade>=1)
+  .sort((a,b)=>{
+   const af=positionFit(a,pos.name);
+   const bf=positionFit(b,pos.name);
+   if(af!==bf)return bf-af;
+   return b.overall-a.overall;
+  });
+
+ return `
+ <div class="card">
+  <h3>背番号 ${pos.no}：${pos.name}</h3>
+
+  ${p?`
+   <div class="notice">
+    現在：<b>${esc(p.name)}</b>
+    ${positionFit(p,pos.name)?
+     " 🟢 適性あり":
+     " 🔴 適性外（試合総合 −5）"}
+   </div>
+  `:"<div class=\"muted\">まだ選択されていません</div>"}
+
+  ${candidates.map(x=>`
+   <button class="pos-btn ${current===x.id?"selected":""}"
+    onclick="setLineup(${pos.no},'${x.id}')">
+    <b>${esc(x.name)}</b>
+    <span style="float:right">${x.overall}</span><br>
+    ${nationalityBadge(x)}
+    <span class="badge pos">本来 ${x.position}</span>
+    ${positionFit(x,pos.name)?
+     '<span class="badge">適性◎</span>':
+     '<span class="badge">適性外 −5</span>'}
+   </button>
+  `).join("")}
+ </div>
+ `;
+}
+
+function setLineup(number,id){
+ /* 同一選手の重複を防ぐ */
+ for(const n in game.lineup){
+  if(game.lineup[n]===id && Number(n)!==number){
+   delete game.lineup[n];
+  }
+ }
+ game.lineup[number]=id;
+ renderLineup();
+}
+
+function finishLineup(){
+ if(Object.keys(game.lineup).length<15){
+  alert("15人すべての背番号を決定してください。");
+  return;
+ }
+ game.logs.push("スタメン15人を確定しました。");
+ autoSave();
+ alert("スタメンを確定しました！");
+ renderGame();
+}
+
+/* =========================================================
+   スカウト
+   ========================================================= */
+
+function generateScouting(){
+ const schools=SCHOOL_DATA[game.prefecture]||[];
+ game.candidates=[];
+
+ for(let i=0;i<30;i++){
+  const s=pick(schools);
+  const strength=s[1];
+
+  /*
+   天才出現率2倍。
+   通常4%に対し、スカウトでは8%。
+  */
+  const genius=Math.random()<0.08;
+  const p=makePlayer(game.prefecture,s[0],strength,rand(1,3),Math.random()<0.07);
+
+  if(genius){
+   p.genius=true;
+   p.overall=clamp(p.overall+rand(5,12),1,99);
+   for(const k in p.stats){
+    p.stats[k]=clamp(p.stats[k]+rand(3,9),1,99);
+   }
+  }
+
+  game.candidates.push(p);
+ }
+
+ game.selectedCandidates=[];
+}
+
+function renderScouting(){
+ if(!game.candidates.length)generateScouting();
+
+ document.getElementById("app").innerHTML=
+ headerHTML()+
+ `<main class="container">
+  <div class="card">
+   <button class="secondary small" onclick="renderGame()">← 戻る</button>
+   <h1>🔎 スカウト</h1>
+
+   <div class="notice">
+    候補は30人。複数人選択できます。<br>
+    ⭐ 天才選手は通常より<strong>2倍の頻度</strong>で出現します。
+   </div>
+
+   <div class="stat">
+    <span>選択人数</span>
+    <b>${game.selectedCandidates.length}人</b>
+   </div>
+
+   ${game.candidates.map((p,i)=>`
+    <div class="player">
+     <div class="player-title">
+      <div>
+       <b>${esc(p.name)}</b><br>
+       ${nationalityBadge(p)}
+       <span class="badge">${p.grade}年</span>
+       <span class="badge pos">${p.position}</span>
+       ${geniusBadge(p)}
+      </div>
+      <div class="ovr">${p.overall}</div>
+     </div>
+
+     <div class="muted" style="margin:6px 0">
+      ${esc(p.sourceSchool)}
+     </div>
+
+     <button class="${game.selectedCandidates.includes(p.id)?"warning":"primary"} small"
+      onclick="toggleCandidate('${p.id}')">
+      ${game.selectedCandidates.includes(p.id)?"選択解除":"獲得候補に追加"}
+     </button>
+
+     <button class="secondary small" onclick="showCandidate('${p.id}')">
+      詳細
+     </button>
+    </div>
+   `).join("")}
+
+   <button class="primary big" onclick="acquireCandidates()">選択選手を獲得</button>
+   <button class="secondary big" onclick="generateScouting();renderScouting()">候補を入れ替える</button>
+  </div>
+ </main>`;
+}
+
+function toggleCandidate(id){
+ if(game.selectedCandidates.includes(id)){
+  game.selectedCandidates=game.selectedCandidates.filter(x=>x!==id);
+ }else{
+  game.selectedCandidates.push(id);
+ }
+ renderScouting();
+}
+
+function showCandidate(id){
+ const p=game.candidates.find(x=>x.id===id);
+ if(!p)return;
+
+ alert(
+  `${p.name}\n`+
+  `${FLAGS[p.nationality]} ${p.nationality}\n`+
+  `学年：${p.grade}年\n`+
+  `ポジション：${p.position}\n`+
+  `総合：${p.overall}\n`+
+  `出身：${p.sourceSchool}\n`+
+  `${p.genius?"⭐ 天才選手\n":""}`
+ );
+}
+
+function acquireCandidates(){
+ const free=50-game.roster.length;
+
+ if(game.selectedCandidates.length>free){
+  alert(`部員枠が足りません。\n獲得可能人数：${free}人`);
+  return;
+ }
+
+ if(!game.selectedCandidates.length){
+  alert("選手を選択してください。");
+  return;
+ }
+
+ for(const id of game.selectedCandidates){
+  const p=game.candidates.find(x=>x.id===id);
+  if(p){
+   game.roster.push(p);
+   game.logs.push(`スカウトで${p.name}を獲得。`);
+  }
+ }
+
+ const count=game.selectedCandidates.length;
+ game.candidates=[];
+ game.selectedCandidates=[];
+ autoSave();
+
+ alert(`${count}人を獲得しました！`);
+ renderGame();
+}
+
+/* =========================================================
+   試合メニュー
+   ========================================================= */
+
+function renderMatches(){
+ document.getElementById("app").innerHTML=
+ headerHTML()+
+ `<main class="container">
+  <div class="card">
+   <button class="secondary small" onclick="renderGame()">← 戻る</button>
+   <h1>🏉 試合</h1>
+
+   <div class="card">
+    <h3>10月：都道府県地区予選</h3>
+    ${game.month===10?
+      `<button class="primary big" onclick="startPrefTournament()">地区予選を戦う</button>`:
+      `<p class="muted">10月になると開催されます。</p>`
+    }
+   </div>
+
+   <div class="card">
+    <h3>11月：全国大会</h3>
+    ${game.month===11&&game.nationalQualified?
+      `<button class="primary big" onclick="startNationalTournament()">全国大会へ</button>`:
+      `<p class="muted">${
+       game.nationalQualified?
+       "全国大会出場権を獲得済みです。":
+       "都道府県予選を勝ち抜くと出場できます。"
+      }</p>`
+    }
+   </div>
+
+   <div class="card">
+    <h3>練習試合</h3>
+    <button class="secondary big" onclick="practiceMatch()">練習試合をする</button>
+   </div>
+
+   <div class="card">
+    <h3>過去の試合</h3>
+    ${game.history.length?
+     game.history.slice().reverse().map(matchHTML).join(""):
+     "<p class=\"muted\">試合履歴はありません。</p>"
+    }
+   </div>
+  </div>
+ </main>`;
+}
+
+/* =========================================================
+   地区予選
+   ========================================================= */
+
+function startPrefTournament(){
+ if(game.month!==10){
+  alert("地区予選は10月です。");
+  return;
+ }
+
+ if(Object.keys(game.lineup).length<15){
+  alert("先に15人のスタメンを決めてください。");
+  renderLineup();
+  return;
+ }
+
+ const schools=(SCHOOL_DATA[game.prefecture]||[])
+  .filter(x=>x[0]!==game.school)
+  .sort((a,b)=>b[1]-a[1]);
+
+ const opponents=schools.slice(0,Math.min(7,schools.length));
+
+ runTournamentRounds(opponents,"地区予選",false);
+}
+
+function runTournamentRounds(opponents,tournament,isNational){
+ if(!opponents.length){
+  game.nationalQualified=true;
+  alert("対戦校がいないため予選突破扱いです。");
+  autoSave();
+  renderGame();
+  return;
+ }
+
+ let round=1;
+ let currentOpponents=opponents;
+
+ function nextRound(){
+  if(round>currentOpponents.length){
+   if(!isNational){
+    game.nationalQualified=true;
+    game.octoberDone=true;
+    game.logs.push(`${game.prefecture}地区予選を優勝！全国大会出場権獲得。`);
+    autoSave();
+    alert("🏆 地区予選優勝！\n全国大会出場決定！");
+    renderGame();
+   }else{
+    game.nationalDone=true;
+    game.logs.push("全国大会を戦い終えました。");
+    autoSave();
+    renderGame();
+   }
+   return;
+  }
+
+  const opponent=currentOpponents[round-1];
+  showMatchPreview(
+   opponent[0],
+   opponent[1],
+   tournament+" 第"+round+"戦",
+   ()=>{
+    const result=playMatch(
+     opponent[0],
+     opponent[1],
+     tournament,
+     false
+    );
+
+    if(!result.win){
+     alert(`敗退しました。\n${result.scoreUs}-${result.scoreThem}`);
+     autoSave();
+     renderGame();
+     return;
+    }
+
+    alert(`勝利！\n${result.scoreUs}-${result.scoreThem}`);
+    round++;
+    nextRound();
+   }
+  );
+ }
+
+ nextRound();
+}
+
+/* =========================================================
+   全国大会
+   ========================================================= */
+
+function startNationalTournament(){
+ if(!game.nationalQualified){
+  alert("まず都道府県予選を勝ち抜いてください。");
+  return;
+ }
+
+ const all=[];
+
+ for(const pref of PREFS){
+  for(const s of (SCHOOL_DATA[pref]||[])){
+   if(s[0]!==game.school){
+    all.push({
+     school:s[0],
+     pref,
+     strength:s[1]
+    });
+   }
+  }
+ }
+
+ all.sort((a,b)=>b.strength-a.strength);
+
+ /*
+  実際の全国大会は56チーム規模。
+  ゲームでは操作性を考慮し16校トーナメント。
+ */
+ const opponents=all.slice(0,7).map(x=>[x.school,x.strength]);
+
+ runTournamentRounds(opponents,"全国大会",true);
+}
+
+/* =========================================================
+   試合
+   ========================================================= */
+
+function showMatchPreview(school,strength,title,onStart){
+ document.getElementById("app").innerHTML=
+ headerHTML()+
+ `<main class="container">
+  <div class="card center">
+   <div class="muted">${title}</div>
+   <h1>${esc(game.school)}</h1>
+   <div class="score">VS</div>
+   <h1>${esc(school)}</h1>
+
+   <div class="grid2">
+    <div class="stat"><span>自校戦力</span><b>${teamOverall()}</b></div>
+    <div class="stat"><span>相手戦力</span><b>${strength}</b></div>
+   </div>
+
+   <button class="secondary big" onclick="showOpponentRoster('${school}',${strength})">
+    👥 相手の15人を見る
+   </button>
+
+   <button class="primary big" onclick="onStart()">
+    🏉 キックオフ
+   </button>
+
+   <button class="secondary big" onclick="renderMatches()">
+    戻る
+   </button>
+  </div>
+ </main>`;
+}
+
+function makeOpponent15(school,strength){
+ const pref=findSchoolPref(school);
+ const team=makeTeam(pref,school,strength,15);
+
+ team.forEach((p,i)=>{
+  p.grade=rand(1,3);
+  p.position=POSITIONS[i].name;
+  p.overall=clamp(p.overall+rand(-4,4),35,99);
+ });
+ return team;
+}
+
+function showOpponentRoster(school,strength){
+ const team=makeOpponent15(school,strength);
+
+ document.getElementById("app").innerHTML=
+ headerHTML()+
+ `<main class="container">
+  <div class="card">
+   <button class="secondary small" onclick="renderMatches()">← 戻る</button>
+   <h1>${esc(school)}</h1>
+   <p class="muted">対戦相手スタメン15人</p>
+
+   ${team.map((p,i)=>`
+    <div class="player">
+     <div class="player-title">
+      <div>
+       <b>${i+1}. ${esc(p.name)}</b><br>
+       ${nationalityBadge(p)}
+       <span class="badge pos">${p.position}</span>
+       <span class="badge">${p.grade}年</span>
+      </div>
+      <div class="ovr">${p.overall}</div>
+     </div>
+    </div>
+   `).join("")}
+  </div>
+ </main>`;
+}
+
+function playMatch(opponent,strength,tournament,practice){
+ const us=teamOverall();
+ const variance=rand(-10,10);
+
+ let usScore=clamp(Math.round((us-strength)*1.1+35+variance),0,100);
+ let themScore=clamp(Math.round((strength-us)*1.0+28+rand(-8,8)),0,100);
+
+ /*
+  試合として自然になるように多少調整
+ */
+ if(us>strength)usScore+=rand(3,15);
+ if(us<strength)themScore+=rand(3,15);
+
+ usScore=clamp(usScore,0,99);
+ themScore=clamp(themScore,0,99);
+
+ const win=usScore>themScore;
+
+ const starters=getStarters();
+
+ starters.forEach(x=>{
+  x.player.appearances++;
+  if(win && Math.random()<.3)x.player.tries++;
+  if(Math.random()<.4)x.player.tacklesMade+=rand(1,5);
+ });
+
+ const match={
+  date:`${game.year}/${game.month}`,
+  tournament,
+  opponent,
+  scoreUs:usScore,
+  scoreThem:themScore,
+  win,
+  roster:starters.map(x=>({
+   number:x.number,
+   position:x.position,
+   playerId:x.player.id,
+   playerName:x.player.name,
+   effectiveOverall:x.effectiveOverall
+  })),
+  opponentRoster:makeOpponent15(opponent,strength).map((p,i)=>({
+   number:i+1,
+   position:POSITIONS[i].name,
+   name:p.name,
+   nationality:p.nationality,
+   overall:p.overall
+  }))
+ };
+
+ game.history.push(match);
+
+ return {
+  win,
+  scoreUs:usScore,
+  scoreThem:themScore
+ };
+}
+
+function practiceMatch(){
+ const schools=(SCHOOL_DATA[game.prefecture]||[])
+  .filter(s=>s[0]!==game.school);
+
+ if(!schools.length)return;
+
+ const opponent=pick(schools);
+
+ if(Object.keys(game.lineup).length<15){
+  alert("先にスタメン15人を決定してください。");
+  renderLineup();
+  return;
+ }
+
+ showMatchPreview(
+  opponent[0],
+  opponent[1],
+  "練習試合",
+  ()=>{
+   const r=playMatch(opponent[0],opponent[1],"練習試合",true);
+   alert(`${r.win?"勝利":"敗北"}！\n${r.scoreUs}-${r.scoreThem}`);
+   autoSave();
+   renderGame();
+  }
+ );
+}
+
+function matchHTML(m){
+ return `
+ <div class="match">
+  <div class="muted">${esc(m.date)}｜${esc(m.tournament)}</div>
+  <b>${esc(game.school)} VS ${esc(m.opponent)}</b>
+  <div class="score">${m.scoreUs} - ${m.scoreThem}</div>
+  <div>${m.win?"🟢 勝利":"🔴 敗戦"}</div>
+  <button class="secondary small" onclick="viewMatchRoster(${game.history.indexOf(m)})">
+   出場メンバーを見る
+  </button>
+ </div>
+ `;
+}
+
+function viewMatchRoster(index){
+ const m=game.history[index];
+ if(!m)return;
+
+ document.getElementById("app").innerHTML=
+ headerHTML()+
+ `<main class="container">
+  <div class="card">
+   <button class="secondary small" onclick="renderMatches()">← 戻る</button>
+   <h1>試合メンバー</h1>
+
+   <div class="center">
+    <h2>${esc(game.school)} ${m.scoreUs} - ${m.scoreThem} ${esc(m.opponent)}</h2>
+   </div>
+
+   <h3>自校15人</h3>
+   ${m.roster.map(x=>`
+    <div class="player">
+     <b>${x.number}. ${esc(x.playerName)}</b>
+     <span class="badge pos">${x.position}</span>
+     <span class="badge">試合総合 ${x.effectiveOverall}</span>
+    </div>
+   `).join("")}
+
+   <h3>相手15人</h3>
+   ${m.opponentRoster.map(x=>`
+    <div class="player">
+     <b>${x.number}. ${esc(x.name)}</b>
+     <span class="badge pos">${x.position}</span>
+     <span class="badge">${FLAGS[x.nationality]||"🏳️"} ${x.nationality}</span>
+     <span class="badge">総合 ${x.overall}</span>
+    </div>
+   `).join("")}
+  </div>
+ </main>`;
+}
+
+/* =========================================================
+   月進行
+   ========================================================= */
+
+function nextMonth(){
+ /*
+  4→5→6→7→8→9→10→11→12→1→2→3→4
+ */
+ if(game.month===10 && !game.octoberDone){
+  alert("10月の地区予選を終えてください。");
+  startPrefTournament();
+  return;
+ }
+
+ if(game.month===11 && game.nationalQualified && !game.nationalDone){
+  alert("全国大会を終えてください。");
+  startNationalTournament();
+  return;
+ }
+
+ if(game.month===3){
+  graduatePlayers();
+ }
+
+ game.month++;
+
+ if(game.month===13){
+  game.month=1;
+  game.year++;
+ }
+
+ if(game.month>=4 && game.month<=9){
+  developPlayers();
+ }
+
+ if(game.month===6 || game.month===9){
+  generateScouting();
+ }
+
+ if(game.month===10){
+  game.octoberDone=false;
+ }
+
+ if(game.month===11){
+  game.nationalDone=false;
+ }
+
+ if(game.month===4){
+  newSeason();
+ }
+
+ autoSave();
+ renderGame();
+}
+
+function developPlayers(){
+ game.roster.forEach(p=>{
+  let growth=rand(0,2);
+
+  if(p.genius)growth+=rand(1,3);
+
+  const facility=game.facilities.training;
+  growth+=Math.floor(facility/2);
+
+  if(p.grade===3)growth=Math.max(0,growth-1);
+
+  p.overall=clamp(p.overall+growth,1,99);
+
+  for(const k in p.stats){
+   p.stats[k]=clamp(p.stats[k]+rand(0,growth),1,99);
+  }
+ });
+}
+
+function newSeason(){
+ game.roster.forEach(p=>{
+  if(p.grade<3)p.grade++;
+ });
+}
+
+/* =========================================================
+   卒業・進路・レジェンド
+   ========================================================= */
+
+function graduatePlayers(){
+ const graduates=game.roster.filter(p=>p.grade>=3);
+
+ if(!graduates.length)return;
+
+ game.graduates=[];
+
+ graduates.forEach(p=>{
+  const candidates=UNIVERSITY
+   .filter(x=>x[1]<=p.overall+8)
+   .slice(0,5);
+
+  const uni=candidates.length?pick(candidates):pick(UNIVERSITY);
+
+  const commitment=clamp(
+   Math.round(p.overall*0.72+rand(5,30)),
+   45,100
+  );
+
+  p.destination=uni[0];
+  p.commitment=commitment;
+
+  const record={
+   ...JSON.parse(JSON.stringify(p)),
+   graduationYear:game.year
+  };
+
+  game.graduates.push(record);
+
+  /*
+   高能力＋実績選手をレジェンドOBへ。
+  */
+  if(p.overall>=88 || p.genius){
+   game.legends.push(record);
+   game.logs.push(
+    `🌟 ${p.name}がレジェンドOBとして登録されました。`
+   );
+  }
+
+  /*
+   世界選抜判定
+  */
+  if(p.overall>=92){
+   p.worldSelected=true;
+   p.worldYear=game.year;
+   game.worldHistory.push({
+    year:game.year,
+    player:p.name,
+    nationality:p.nationality
+   });
+   game.logs.push(
+    `🌎 ${p.name}が世界選抜に招集されました。`
+   );
+  }
+ });
+
+ game.roster=game.roster.filter(p=>p.grade<3);
+ game.lineup={};
+
+ game.logs.push(`${graduates.length}人が卒業しました。`);
+}
+
+/* =========================================================
+   世界選抜
+   ========================================================= */
+
+function worldSelection(){
+ const candidates=game.roster
+  .filter(p=>p.overall>=90)
+  .sort((a,b)=>b.overall-a.overall);
+
+ if(!candidates.length){
+  alert("現在、世界選抜候補となる選手はいません。");
+  return;
+ }
+
+ candidates.slice(0,15).forEach(p=>{
+  p.worldSelected=true;
+  p.worldYear=game.year;
+ });
+
+ alert(
+  candidates.slice(0,15)
+   .map(p=>`${FLAGS[p.nationality]} ${p.name} 総合${p.overall}`)
+   .join("\n")
+ );
+}
+
+/* =========================================================
+   施設
+   ========================================================= */
+
+function renderFacilities(){
+ document.getElementById("app").innerHTML=
+ headerHTML()+
+ `<main class="container">
+  <div class="card">
+   <button class="secondary small" onclick="renderGame()">← 戻る</button>
+   <h1>🏫 施設</h1>
+
+   ${facilityCard("training","🏋️ 練習施設","選手の成長速度")}
+   ${facilityCard("gym","💪 ウエイト施設","パワー・フィジカル")}
+   ${facilityCard("scouting","🔎 スカウト網","スカウト候補の質")}
+   ${facilityCard("medical","🏥 メディカル","コンディション")}
+  </div>
+ </main>`;
+}
+
+function facilityCard(key,title,desc){
+ const lv=game.facilities[key];
+
+ return `
+ <div class="card">
+  <h3>${title}</h3>
+  <p class="muted">${desc}</p>
+  <div class="stat">
+   <span>Lv.</span><b>${lv}</b>
+  </div>
+  <button class="primary small" onclick="upgradeFacility('${key}')">
+   強化（${lv*30}）
+  </button>
+ </div>
+ `;
+}
+
+function upgradeFacility(key){
+ const cost=game.facilities[key]*30;
+
+ if(game.money<cost){
+  alert("資金が足りません。");
+  return;
+ }
+
+ game.money-=cost;
+ game.facilities[key]++;
+ game.logs.push(`${key}施設をLv.${game.facilities[key]}へ強化。`);
+
+ autoSave();
+ renderFacilities();
+}
+
+/* =========================================================
+   記録
+   ========================================================= */
+
+function renderRecords(){
+ const best=calculateBest15();
+
+ document.getElementById("app").innerHTML=
+ headerHTML()+
+ `<main class="container">
+  <div class="card">
+   <button class="secondary small" onclick="renderGame()">← 戻る</button>
+   <h1>🏆 年間記録</h1>
+
+   <h2>年間ベスト15</h2>
+
+   ${best.map((p,i)=>`
+    <div class="player">
+     <b>${i+1}. ${esc(p.name)}</b>
+     <span class="badge pos">${p.position}</span>
+     <span class="badge">総合 ${p.overall}</span>
+     <br>
+     <span class="muted">出身：${esc(p.sourceSchool)}</span>
+     ${nationalityBadge(p)}
+    </div>
+   `).join("")}
+
+   <button class="primary big" onclick="saveBest15()">今年のベスト15を記録</button>
+  </div>
+
+  <div class="card">
+   <h2>🎓 卒業生</h2>
+   ${game.graduates.length?
+    game.graduates.map(p=>graduateHTML(p)).join(""):
+    "<p class=\"muted\">卒業生はまだいません。</p>"
+   }
+  </div>
+
+  <div class="card">
+   <h2>🌟 レジェンドOB</h2>
+   ${game.legends.length?
+    game.legends.map(p=>graduateHTML(p)).join(""):
+    "<p class=\"muted\">まだレジェンドOBはいません。</p>"
+   }
+  </div>
+
+  <div class="card">
+   <h2>🌎 世界選抜招集記録</h2>
+   ${game.worldHistory.length?
+    game.worldHistory.map(x=>`
+     <div class="stat">
+      <span>${x.year}年 ${FLAGS[x.nationality]||""} ${esc(x.nationality)}</span>
+      <b>${esc(x.player)}</b>
+     </div>
+    `).join(""):
+    "<p class=\"muted\">まだ招集者はいません。</p>"
+   }
+  </div>
+ </main>`;
+}
+
+function calculateBest15(){
+ return game.roster
+  .slice()
+  .sort((a,b)=>{
+   const scoreA=a.overall+a.tries*2+a.tacklesMade;
+   const scoreB=b.overall+b.tries*2+b.tacklesMade;
+   return scoreB-scoreA;
+  })
+  .slice(0,15);
+}
+
+function saveBest15(){
+ const best=calculateBest15();
+
+ game.best15History.push({
+  year:game.year,
+  players:best.map(p=>({
+   name:p.name,
+   position:p.position,
+   overall:p.overall,
+   sourceSchool:p.sourceSchool
+  }))
+ });
+
+ game.logs.push(`${game.year}年度ベスト15を記録しました。`);
+ autoSave();
+ alert("年間ベスト15を記録しました！");
+}
+
+function graduateHTML(p){
+ return `
+ <div class="player">
+  <b>${esc(p.name)}</b>
+  ${nationalityBadge(p)}
+  ${geniusBadge(p)}
+  <div class="stat"><span>総合</span><b>${p.overall}</b></div>
+  <div class="stat"><span>出身高校</span><b>${esc(p.sourceSchool)}</b></div>
+  <div class="stat"><span>進学先</span><b>${esc(p.destination||"未定")}</b></div>
+  <div class="stat"><span>確約度</span><b>${p.commitment}%</b></div>
+ </div>
+ `;
+}
+
+/* =========================================================
+   学校検索
+   ========================================================= */
+
+function findSchoolPref(school){
+ for(const pref of PREFS){
+  const list=SCHOOL_DATA[pref]||[];
+  if(list.some(s=>s[0]===school))return pref;
+ }
+ return game.prefecture;
+}
+
+/* =========================================================
+   オートセーブ
+   ========================================================= */
+
+function autoSave(){
+ if(selectedSave)saveGame(selectedSave);
+}
+
+/* =========================================================
+   起動
+   ========================================================= */
+
+renderTitle();
+
+</script>
+
+</body>
+</html>
